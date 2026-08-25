@@ -14,45 +14,60 @@ class CalculatorViewModel : ViewModel(){
 
     private val _resultText = MutableLiveData("")
     val resultText : LiveData<String> =_resultText
-    fun onButtonClick(btn : String) {
+    fun onButtonClick(btn: String) {
         Log.i("Clicked Button", btn)
 
-        _equationText.value?.let {
-            if (btn == "AC") {
-                _equationText.value = "0"
+        val currentEquation = _equationText.value ?: ""
+
+        when (btn) {
+            "AC" -> {
+                _equationText.value = ""
+                _resultText.value = ""
                 return
             }
-            if (btn == "C") {
-                if (it.isNotEmpty()) {
-                    _equationText.value = it.substring(0, it.length - 1)
-                    return
+            "C" -> {
+                if (currentEquation.isNotEmpty()) {
+                    _equationText.value = currentEquation.substring(0, currentEquation.length - 1)
                 }
-
             }
-            if (btn == "=") {
-                _equationText.value = _resultText.value
+            "=" -> {
+                if (_resultText.value?.isNotEmpty() == true) {
+                    _equationText.value = _resultText.value
+                }
                 return
-
             }
-            _equationText.value = it + btn
-            // calculate result
-            try {
-                _resultText.value = calculateResult(_equationText.value.toString())
+            else -> {
+                _equationText.value = currentEquation + btn
+            }
+        }
 
-            }catch (_ : Exception){}
-
-
+        // calculate result
+        try {
+            val equation = _equationText.value ?: ""
+            if (equation.isNotEmpty()) {
+                val res = calculateResult(equation)
+                if (res != "undefined") {
+                    _resultText.value = res
+                }
+            } else {
+                _resultText.value = ""
+            }
+        } catch (_: Exception) {
+            // Don't update result if equation is incomplete/invalid
         }
     }
 
-    fun calculateResult(equation : String) : String {
+    fun calculateResult(equation: String): String {
         val context: Context = Context.enter()
         context.optimizationLevel = -1
         val scriptable: Scriptable = context.initStandardObjects()
+        // Replace 'x' with '*' if user uses 'x' for multiplication
+        val processedEquation = equation.replace("x", "*")
         var finalResult =
-            context.evaluateString(scriptable, equation, "Javascipt", 1, null).toString()
-        if (finalResult.endsWith("0")){
-            finalResult = finalResult.replace(".0","")
+            context.evaluateString(scriptable, processedEquation, "Javascript", 1, null).toString()
+        
+        if (finalResult.endsWith(".0")) {
+            finalResult = finalResult.substring(0, finalResult.length - 2)
         }
         return finalResult
     }
