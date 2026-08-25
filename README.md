@@ -17,6 +17,21 @@
 * ⚡ Reactive UI with LiveData
 * 🏗️ ViewModel-based state management
 
+## 📸 Screenshots
+
+### 🧮 Calculator Home Screen
+
+<p align="center">
+  <img src="screenshots/calculator-home.png" width="300" alt="Calcify Calculator Home Screen">
+</p>
+
+### 🧮 Calculation Result
+
+<p align="center">
+  <img src="screenshots/calculator-result.png" width="300" alt="Calcify Calculation Result">
+</p>
+
+
 ## 🛠️ Tech Stack
 
 * **Language:** Kotlin
