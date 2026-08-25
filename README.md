@@ -17,6 +17,12 @@
 * ⚡ Reactive UI with LiveData
 * 🏗️ ViewModel-based state management
 
+## 📱 Screenshots
+
+<p align="center">
+  <img src="screenshot/calculator_screenshot.png" width="300" title="Calculator Screenshot">
+</p>
+
 ## 🛠️ Tech Stack
 
 * **Language:** Kotlin
